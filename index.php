@@ -30,7 +30,7 @@ $url = 'local.local';
 if(isSiteAvailable(($url))) {
   $on = 'Сайт доступен';
 } else {
-  $off = 'Сайт не доступен';
+  $off = 'Сайт не доступен ' . date('d.m.Y H:i:s');
   sendMessage('@test_analyzer_irormlg', $off, '1452762121:AAF66kR5JyrzcRoLtrSnTDSwhSlUs-zGxEc',);
 }
 
