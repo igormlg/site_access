@@ -1,4 +1,5 @@
 <?php
+$url = 'http://test.damprodam.ru/';
 function isSiteAvailable($url) {
   
   if (!filter_var($url, FILTER_VALIDATE_URL)) {
@@ -14,25 +15,37 @@ function isSiteAvailable($url) {
   curl_setopt($curlInit, CURLOPT_NOBODY, true); //исключение тела ответа из вывода
   curl_setopt($curlInit, CURLOPT_RETURNTRANSFER, true); // возврат результата передачи в качестве строки из curl_exec() вместо прямого вывода в браузер.
 
+  curl_exec($curlInit);
   // Получение ответа
   $response = curl_exec($curlInit); // Выполняет запрос cURL
+  // print_r($response);
+  // echo $response;
 
-  /// закрываем CURL
+  // /// закрываем CURL
+  // curl_close($curlInit);
+
+  // return $response ? true : false;
+
+  $httpCode = curl_getinfo($curlInit, CURLINFO_HTTP_CODE);
+  // echo $httpCode;
   curl_close($curlInit);
 
-  return $response ? true : false;
-
+  return $httpCode;
 }
+$check = isSiteAvailable($url);
 
-$url = 'local.local';
-
-
-if(isSiteAvailable(($url))) {
-  $on = 'Сайт доступен';
-} else {
-  $off = 'Сайт не доступен ' . date('d.m.Y H:i:s');
+if ($check != 200) {
+    $off = 'Сайт не доступен ' . date('d.m.Y H:i:s');
   sendMessage('@test_analyzer_irormlg', $off, '1452762121:AAF66kR5JyrzcRoLtrSnTDSwhSlUs-zGxEc',);
+
 }
+
+// if(isSiteAvailable(($url))) {
+//   $on = 'Сайт доступен';
+// } else {
+//   $off = 'Сайт не доступен ' . date('d.m.Y H:i:s');
+//   // sendMessage('@test_analyzer_irormlg', $off, '1452762121:AAF66kR5JyrzcRoLtrSnTDSwhSlUs-zGxEc',);
+// }
 
 // скрипт для вывода сообщения в телеграмм
 function sendMessage($chatID, $messaggio, $token) {
